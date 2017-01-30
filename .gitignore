@@ -1,0 +1,7 @@
+simulator-linux
+udacity-sdc-udacity-self-driving-car-simulator*
+IMG
+driving_log.csv
+.idea
+.ipynb_checkpoints
+__pycache__
