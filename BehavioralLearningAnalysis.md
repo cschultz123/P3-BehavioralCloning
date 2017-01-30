@@ -586,7 +586,7 @@ Layers:
 9. Dense 50
 10. Dense 1
 
-Using ELU for activations because they are supposed to be better than RELUs. I have yet to read the paper so I am taking it purely on word of mouth at the moment. Here is the general though process behind the layering. The first convolutional layer is there to allow the model to select the optimal color space for feature discovery. The four layers convolutional layers are there to identify increasingly complex features. The three fully connected layers translate the features discovered by the convolutional neural networks to the steering angle command.
+Using ELU for activations because they are supposed to be better than RELUs. I have yet to read the paper so I am taking it purely on word of mouth at the moment. Here is the general thought process behind the layering. The first convolutional layer is there to allow the model to select the optimal color space for feature discovery. The four convolutional layers are there to identify increasingly complex features. The three fully connected layers translate the features discovered by the convolutional neural networks to the steering angle command.
 
 
 ```python
@@ -677,3 +677,8 @@ I did try training the model with the following parameters:
 - 5 epochs of 40,000 samples
 
 That was enough for the model to seriously overfit and become useful. There is definitely a balance between generalization and overfitting for this problem. The approach that seems to work the best is to train your model incremently over time and save the intermediate states.
+
+
+## Reflection
+
+This was a very interesting application of neural networks. My entire experience up this point has been classification using softmax. The fact that you can generalize a regression problem like this is very powerful.
