@@ -17,7 +17,7 @@ MODEL_NAME_REG = re.compile("(?P<current>\d*)_(?P<prior>\d*)__(?P<data_src>.*)__
 ##############################################################################
 
 
-def load_driving_log(fp="original.csv"):
+def load_driving_log(fp="data/original.csv"):
     """Load original.csv into Pandas Dataframe."""
     ds = pd.read_csv(fp, names=['center', 'left', 'right', 'steering', 'throttle', 'brake', 'speed'])
     ds['left'] = ds['left'].str.strip()
@@ -133,18 +133,6 @@ def image_generator(fp, batch_size=32, train=False):
     # load original.csv as Pandas Dataframe
     ds = load_driving_log(fp)
 
-    # 66% of data will be turn based driving
-    high_selection, = np.where(ds.steering > 0.05)
-
-    # 33% of data will be straight driving
-    low_selection, = np.where(ds.steering <= 0.05)
-    low_index = np.random.randint(0, len(low_selection), size=(int(len(high_selection) * 0.75),))
-    low_selection = low_selection[low_index]
-
-    selection = np.concatenate((high_selection, low_selection))
-
-    ds = ds.iloc[selection]
-
     while True:
         # containers for images
         images = list()
@@ -162,7 +150,7 @@ def image_generator(fp, batch_size=32, train=False):
             # select camera perspective
             camera = "center"
             if train:
-                camera = np.random.choice(['left', 'center', 'right'])
+                camera = np.random.choice(['left', 'right'])
 
             # read image and steering angle
             img, angle = imread(entry[camera]), entry['steering']

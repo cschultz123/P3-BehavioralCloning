@@ -22,6 +22,22 @@ model = None
 prev_image_array = None
 
 
+class WeightedAverage:
+    def __init__(self, hist=5):
+        self._hist = hist
+        self._data = []
+
+    def compute(self, x):
+        # remove oldest element from history
+        if len(self._data) == self._hist:
+            self._data.pop(0)
+        self._data.append(x)
+        return np.mean(self._data)
+
+
+average = WeightedAverage()
+
+
 class SimplePIController:
     def __init__(self, Kp, Ki):
         self.Kp = Kp
@@ -44,7 +60,7 @@ class SimplePIController:
 
 
 controller = SimplePIController(0.1, 0.002)
-set_speed = 9
+set_speed = 30
 controller.set_desired(set_speed)
 
 
@@ -63,7 +79,7 @@ def telemetry(sid, data):
         image_array = np.asarray(image)
         image_array = preprocess(image_array)
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
-
+        # steering_angle = average.compute(steering_angle)
         throttle = controller.update(float(speed))
 
         print(steering_angle, throttle)
